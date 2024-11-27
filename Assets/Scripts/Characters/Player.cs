@@ -110,7 +110,6 @@ public class PlayerController : BaseCharacter, IInteractable
         var collider = Physics2D.OverlapCircle(interact_pos, 0.2f, interactable_layer);
         if (collider != null && collider.GetComponent<IInteractable>() != null)
         {
-            Debug.Log("Try interact! " + context.phase);
             collider.GetComponent<IInteractable>().Interact(GetComponent<IInteractable>());
         }
     }

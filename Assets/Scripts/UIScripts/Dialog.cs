@@ -11,4 +11,9 @@ public class Dialog
     {
         get { return lines; }
     }
+
+    public int GetSize()
+    {
+         return lines.Count;
+    }
 }

@@ -1,19 +1,21 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
-    [SerializeField] GameObject dialogBox;
-    [SerializeField] Text dialogText;
+    [SerializeField] GameObject  dialogBox;
+    [SerializeField] TMP_Text dialogText;
+    [SerializeField] RectTransform scrollContent;
 
     [SerializeField] int lettersPerSecond;
 
     public static DialogManager Instance { get; private set; }
 
     private DialogueAction activeDialogueAction;
-    private Dialog         activeDialog;
+    private DialogObject   activeDialog;
     private Coroutine      currentCoroutine;
     private int            lineNum;
     private bool           showInProgress;
@@ -35,7 +37,7 @@ public class DialogManager : MonoBehaviour
     }
     public void ShowDialog()
     {
-        string currentLine = activeDialog.Lines[lineNum];
+        string currentLine = activeDialog.Dialog[lineNum];
 
         if (showInProgress)
         {

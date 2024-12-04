@@ -11,7 +11,7 @@ public class DialogueAction : InteractionComponent, IInteractionAction
     public static event Action dialogueStarted;
     public static event Action dialogueEnded;
 
-    [SerializeField] Dialog dialog;
+    [SerializeField] DialogObject dialog;
 
     public new void RunInteraction(IInteractable source_of_interaction)
     {
@@ -19,7 +19,7 @@ public class DialogueAction : InteractionComponent, IInteractionAction
         DialogManager.Instance.StartDialogue(this);
     }
 
-    public Dialog GetDialogue()
+    public DialogObject GetDialogue()
     {
         return dialog;
     }

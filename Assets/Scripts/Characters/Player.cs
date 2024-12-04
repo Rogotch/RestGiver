@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class PlayerController : BaseCharacter, IInteractable
 {
     private Vector2 input;
+    private Coroutine moveCoroutine;
+    private bool moveCanceled = true;
 
     protected new void Start()
     {
@@ -19,13 +22,39 @@ public class PlayerController : BaseCharacter, IInteractable
     {
     }
 
-    public void TryMove(InputAction.CallbackContext context)
+    public void ReadMoveInput(InputAction.CallbackContext context)
     {
         if (GameController.state != GameState.FreeRoam)
         {
             return;
         }
+        if (context.canceled)
+        {
+            input = Vector2.zero;
+            moveCanceled = true;
+            return;
+        }
+        else moveCanceled = false;
+
         input = context.ReadValue<Vector2>();
+        if (is_moving)
+        {
+            return;
+        }
+        UpdateTargetPosition();
+    }
+    
+    public void TryMove()
+    {
+        if (input != Vector2.zero)
+        {
+            moveCoroutine = StartCoroutine(Move());
+        }
+    }
+
+    protected new void UpdateCharacterDirection()
+    {
+
         if (input.x != 0) input.y = 0;
 
         if (input != Vector2.zero)
@@ -34,11 +63,6 @@ public class PlayerController : BaseCharacter, IInteractable
             character_animator.SetFloat("direction_x", input.x);
             character_animator.SetFloat("direction_y", input.y);
 
-            if (!is_moving)
-            {
-                UpdateTargetPosition();
-                StartCoroutine(Move());
-            }
         }
     }
 
@@ -50,6 +74,9 @@ public class PlayerController : BaseCharacter, IInteractable
 
     new IEnumerator Move()
     {
+        is_moving = true;
+        character_animator.SetBool("is_moving", is_moving);
+
         while ((target_position - transform.position).sqrMagnitude > Mathf.Epsilon)
         {
             transform.position = Vector3.MoveTowards(transform.position, target_position, movement_speed * Time.deltaTime);
@@ -57,41 +84,54 @@ public class PlayerController : BaseCharacter, IInteractable
             yield return null;
         }
 
+        is_moving = false;
+        character_animator.SetBool("is_moving", is_moving);
+
         UpdateMapPosition();
         UpdateTargetPosition();
     }
 
     private new void UpdateTargetPosition()
     {
-        bool old_value = is_moving;
-        if (input == Vector2.zero || !IsWalkable(target_position))
+        UpdateCharacterDirection();
+        if (!IsWalkable(target_position))
         {
-            is_moving = false;
-            StopCoroutine(Move());
+            if (moveCoroutine != null) StopMoving();
         }
         else
         {
-            is_moving = true;
             Vector3Int grid_position = GetCurrentCellPositionVector3Int();
             Vector3Int grid_target_position = new Vector3Int(grid_position.x + (int)input.x, grid_position.y + (int)input.y, grid_position.z);
             Vector3 predicted_target_position = grid_component.GetCellCenterWorld(grid_target_position);
 
             if (!IsWalkable(predicted_target_position))
             {
-                is_moving = false;
-                StopCoroutine(Move());
+                if (moveCoroutine != null) StopMoving();
             }
             else
             {
-                target_position = predicted_target_position;
-                StartCoroutine(Move());
+                if (target_position != predicted_target_position)
+                {
+                    target_position = predicted_target_position;
+                    TryMove();
+                }
             }
         }
-        if (is_moving != old_value)
+    }
+
+    private void StopMoving()
+    {
+
+        if (moveCoroutine != null)
         {
-            character_animator.SetBool("is_moving", is_moving);
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
         }
-    } 
+        if (!moveCanceled && input != Vector2.zero)
+        {
+            TryMove();
+        }
+    }
     #endregion
 
     #region Interactions

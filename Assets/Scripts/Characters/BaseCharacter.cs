@@ -38,6 +38,11 @@ public class BaseCharacter : MonoBehaviour
     }
 
 
+    protected void UpdateCharacterDirection()
+    {
+
+    }
+
     public Vector2Int GetMapPosition()
     {
         return map_pos;

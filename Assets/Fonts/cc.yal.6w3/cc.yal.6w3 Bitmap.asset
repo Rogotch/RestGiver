@@ -63,24 +63,24 @@ MonoBehaviour:
     m_FaceIndex: 0
     m_FamilyName: cc.yal.6w3
     m_StyleName: Medium
-    m_PointSize: 64
+    m_PointSize: 256
     m_Scale: 1
     m_UnitsPerEM: 1024
-    m_LineHeight: 24
-    m_AscentLine: 36
-    m_CapLine: 24
-    m_MeanLine: 16
+    m_LineHeight: 96
+    m_AscentLine: 144
+    m_CapLine: 96
+    m_MeanLine: 64
     m_Baseline: 0
-    m_DescentLine: 12
-    m_SuperscriptOffset: 36
+    m_DescentLine: 48
+    m_SuperscriptOffset: 144
     m_SuperscriptSize: 0.5
-    m_SubscriptOffset: 12
+    m_SubscriptOffset: 48
     m_SubscriptSize: 0.5
-    m_UnderlineOffset: 0
-    m_UnderlineThickness: 0
-    m_StrikethroughOffset: 6.4
-    m_StrikethroughThickness: 3.1875
-    m_TabWidth: 16
+    m_UnderlineOffset: -88.25
+    m_UnderlineThickness: 12.75
+    m_StrikethroughOffset: 25.6
+    m_StrikethroughThickness: 12.75
+    m_TabWidth: 64
   m_Material: {fileID: 7228229685245229089}
   m_SourceFontFileGUID: 7bfae83517d86394baa700b378f8b83c
   m_CreationSettings:
@@ -88,8 +88,8 @@ MonoBehaviour:
     sourceFontFileGUID: 7bfae83517d86394baa700b378f8b83c
     faceIndex: 0
     pointSizeSamplingMode: 0
-    pointSize: 64
-    padding: 9
+    pointSize: 256
+    padding: 8
     paddingMode: 2
     packingMode: 0
     atlasWidth: 1024
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_ClearDynamicDataOnBuild: 1
   m_AtlasWidth: 1024
   m_AtlasHeight: 1024
-  m_AtlasPadding: 9
+  m_AtlasPadding: 8
   m_AtlasRenderMode: 4118
   m_UsedGlyphRects: []
   m_FreeGlyphRects:

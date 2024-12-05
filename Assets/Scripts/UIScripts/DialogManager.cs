@@ -1,28 +1,67 @@
 using System;
 using System.Collections;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class DialogManager : MonoBehaviour
 {
-    [SerializeField] GameObject  dialogBox;
-    [SerializeField] TMP_Text dialogText;
+    [SerializeField] GameObject    dialogBox;
+    [SerializeField] TMP_Text      dialogText;
     [SerializeField] RectTransform scrollContent;
+    [SerializeField] RectTransform responsesBox;
 
     [SerializeField] int lettersPerSecond;
 
     public static DialogManager Instance { get; private set; }
 
-    private DialogueAction activeDialogueAction;
-    private DialogObject   activeDialog;
-    private Coroutine      currentCoroutine;
-    private int            lineNum;
-    private bool           showInProgress;
+    private ResponseHandler  responseHandler;
+    private TypewriterEffect typewriterEffect;
+    private DialogueAction   activeDialogueAction;
+    private DialogObject     activeDialog;
+    private Coroutine        currentCoroutine;
+    private int              lineNum;
+    private bool             showInProgress;
 
     private void Awake()
     {
         Instance = this;
+    }
+
+    private void OnEnable()
+    {
+        TypewriterEffect.DialogueShowing  += DialogueShowing;
+        TypewriterEffect.DialogueShowed   += DialogueShowed;
+        TypewriterEffect.DialogueCanceled += DialogueCanceled;
+    }
+
+    private void OnDisable()
+    {
+        TypewriterEffect.DialogueShowing  -= DialogueShowing;
+        TypewriterEffect.DialogueShowed   -= DialogueShowed;
+        TypewriterEffect.DialogueCanceled -= DialogueCanceled;
+    }
+    private void Start()
+    {
+        responseHandler  = GetComponent<ResponseHandler>();
+        typewriterEffect = GetComponent<TypewriterEffect>();
+    }
+
+    private void DialogueShowing()
+    {
+        dialogText.text = string.Empty;
+        showInProgress = true;
+        dialogBox.SetActive(true);
+    }
+    private void DialogueShowed()
+    {
+        showInProgress = false;
+    }
+    private void DialogueCanceled()
+    {
+        showInProgress = false;
+        dialogText.text = activeDialog.Dialog[lineNum];
     }
 
     public void StartDialogue(DialogueAction action)
@@ -30,10 +69,14 @@ public class DialogManager : MonoBehaviour
         if (activeDialogueAction == null)
         {
             activeDialogueAction = action;
-            activeDialog = action.GetDialogue();
-            ShowDialog();
+            SetActiveDialogObject(action.GetDialogue());
         }
         else IncreaseLineNum();
+    }
+    public void SetActiveDialogObject(DialogObject dialogObject)
+    {
+        activeDialog = dialogObject;
+        ShowDialog();
     }
     public void ShowDialog()
     {
@@ -41,39 +84,18 @@ public class DialogManager : MonoBehaviour
 
         if (showInProgress)
         {
-            StopCoroutine(currentCoroutine);
-            FullShowLine(currentLine);
+            typewriterEffect.Stop();
         }
         else
         {
-            dialogBox.SetActive(true);
-            currentCoroutine = StartCoroutine(TypeDialog(currentLine));
+            typewriterEffect.Run(currentLine, dialogText, lettersPerSecond);
         }
-    }
-
-    public IEnumerator TypeDialog(string line)
-    {
-        showInProgress = true;
-        dialogText.text = "";
-        foreach (char letter in line.ToCharArray()) 
-        { 
-            dialogText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
-        }
-        FullShowLine(line);
-    }
-
-    private void FullShowLine(string line)
-    {
-        showInProgress = false;
-        dialogText.text = line;
     }
 
     public void CloseDialog()
     {
         //Debug.Log("line ", lineNum);
         activeDialog = null;
-        lineNum = 0;
         activeDialogueAction.DialogueEnded();
         activeDialogueAction = null;
         dialogBox.SetActive(false);
@@ -87,9 +109,18 @@ public class DialogManager : MonoBehaviour
             {
                 lineNum++;
             }
-            else 
-            { 
-                CloseDialog();
+            else
+            {
+                lineNum = 0;
+                if (activeDialog.HasResponses())
+                {
+                    responseHandler.ShowResponses(activeDialog.Responses);
+                    //scrollContent.sizeDelta = new Vector2(scrollContent.sizeDelta.x, dialogText.GetComponent<RectTransform>().sizeDelta.y + responsesBox.sizeDelta.y);
+                }
+                else
+                {
+                    CloseDialog();
+                }
                 return;
             }
         }

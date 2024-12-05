@@ -16,3 +16,9 @@ MonoBehaviour:
   - "\u041F\u0440\u0438\u0432\u0435\u0442!"
   - "\u041A\u0430\u043A \u0442\u0432\u043E\u0438 \u0434\u0435\u043B\u0430?"
   - "\u0423 \u043C\u0435\u043D\u044F \u0432\u043E\u0442 \u0432\u0441\u0451 \u043D\u043E\u0440\u043C\u0430\u043B\u044C\u043D\u043E!"
+  - Are you ok?
+  responses:
+  - responseText: Yes
+    dialogObject: {fileID: 11400000, guid: b02bce10f6ec5c14886f9f9409aad1b5, type: 2}
+  - responseText: No
+    dialogObject: {fileID: 11400000, guid: b8cfef22a9c73aa44ac2939ce2343731, type: 2}

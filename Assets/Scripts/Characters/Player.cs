@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
-public class PlayerController : BaseCharacter, IInteractable
+public class PlayerController : BaseCharacter, IInteractable, IDataPersistance
 {
     private Vector2 input;
     private Coroutine moveCoroutine;
@@ -164,6 +164,15 @@ public class PlayerController : BaseCharacter, IInteractable
 
     public void EndOfInteractionWith(IInteractable interacted_object)
     {
-    } 
+    }
     #endregion
+    public void LoadData(GameData data)
+    {
+        SetOnMapPosition(data.mapPosition);
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.mapPosition = map_pos;
+    }
 }

@@ -90,4 +90,13 @@ public class BaseCharacter : MonoBehaviour
     protected void UpdateTargetPosition()
     {
     }
+
+    protected void SetOnMapPosition(Vector2Int target_position)
+    {
+        map_pos = target_position;
+        Vector3 offsetToCenter = new Vector3(grid_component.cellSize.x / 2f, grid_component.cellSize.y / 2f, 0);
+        Vector3 newGlobalPosition = grid_component.CellToWorld(new Vector3Int(target_position.x, target_position.y, 0)) ;
+        Debug.Log(newGlobalPosition + " " + offsetToCenter);
+        transform.position = newGlobalPosition + offsetToCenter;
+    }
 }

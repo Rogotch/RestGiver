@@ -2,12 +2,14 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using System;
+using System.Collections.Generic;
 
 public class ResponseHandler : MonoBehaviour
 {
     [SerializeField] private RectTransform responseBox;
     [SerializeField] private RectTransform responseButtonTemplate;
     //[SerializeField] private RectTransform responseContainer;
+    private List<GameObject> temporaryButtons = new List<GameObject>();
     public void ShowResponses(Response[] responses)
     {
         float responseBoxHeight = 0f;
@@ -19,6 +21,8 @@ public class ResponseHandler : MonoBehaviour
             responseButton.GetComponent<TMP_Text>().text = response.ResponseText;
             responseButton.GetComponent<Button>().onClick.AddListener(() => OnPickedResponse(response));
 
+            temporaryButtons.Add(responseButton);
+
             responseBoxHeight += responseButtonTemplate.sizeDelta.y;
         }
         responseBox.sizeDelta = new Vector2(responseBox.sizeDelta.x, responseBoxHeight);
@@ -27,7 +31,12 @@ public class ResponseHandler : MonoBehaviour
 
     private void OnPickedResponse(Response response)
     {
-        Debug.Log(response.ResponseText);
+        responseBox.gameObject.SetActive(false);
+        foreach (GameObject responseButton in temporaryButtons)
+        {
+            Destroy(responseButton);
+        }
+        temporaryButtons.Clear();
         DialogManager.Instance.SetActiveDialogObject(response.DialogObject);
     }
 }

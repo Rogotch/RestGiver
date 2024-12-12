@@ -1,18 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class DialogueAction : InteractionComponent, IInteractionAction
 {
     public static event Action dialogueStarted;
     public static event Action dialogueEnded;
 
-    [SerializeField] DialogObject dialog;
-
+    [SerializeReference] public BaseDialogSelector selector;
     public new void RunInteraction(IInteractable source_of_interaction)
     {
         dialogueStarted?.Invoke();
@@ -21,7 +15,7 @@ public class DialogueAction : InteractionComponent, IInteractionAction
 
     public DialogObject GetDialogue()
     {
-        return dialog;
+        return selector.GetSelectedDialog();
     }
 
     public void DialogueEnded()

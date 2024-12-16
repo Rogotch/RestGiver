@@ -364,14 +364,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selector:
-    rid: 7067266309070782674
+    rid: 7067266379799593032
   references:
     version: 2
     RefIds:
-    - rid: 7067266309070782674
-      type: {class: CommonDialogSelector, ns: , asm: Assembly-CSharp}
+    - rid: 7067266379799593032
+      type: {class: VariantsDialogSelector, ns: , asm: Assembly-CSharp}
       data:
-        dialog: {fileID: 0}
+        dialogsVariants:
+        - {fileID: 11400000, guid: ccb440fc0f148c7449fdb09f3d526545, type: 2}
+        - {fileID: 11400000, guid: 0d919b16b1b184e4e9841bddd2552857, type: 2}
+        - {fileID: 11400000, guid: 02ebab6ab888d314486c0a4028c42450, type: 2}
+        falseDialog: {fileID: 0}
 --- !u!1 &240432636
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,6 @@ public class TagChecker
     }
     protected virtual bool GetTagFlag()
     {
-        Debug.LogError("Incorrect flag");
         return false;
     }
 }

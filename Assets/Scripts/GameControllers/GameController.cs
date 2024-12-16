@@ -12,14 +12,14 @@ public class GameController : MonoBehaviour
 
     private void OnEnable()
     {
-        DialogueAction.dialogueStarted += DialogueStarted;
-        DialogueAction.dialogueEnded   += DialogueEnded;
+        DialogObject.dialogueStarted += DialogueStarted;
+        DialogObject.dialogueEnded   += DialogueEnded;
     }
 
     private void OnDisable()
     {
-        DialogueAction.dialogueStarted -= DialogueStarted;
-        DialogueAction.dialogueEnded   -= DialogueEnded;
+        DialogObject.dialogueStarted -= DialogueStarted;
+        DialogObject.dialogueEnded   -= DialogueEnded;
     }
 
     private void DialogueStarted()

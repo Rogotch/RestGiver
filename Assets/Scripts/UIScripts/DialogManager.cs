@@ -18,7 +18,6 @@ public class DialogManager : MonoBehaviour
 
     private ResponseHandler  responseHandler;
     private TypewriterEffect typewriterEffect;
-    private DialogueAction   activeDialogueAction;
     private DialogObject     activeDialog;
     private Coroutine        currentCoroutine;
     private int              lineNum;
@@ -64,18 +63,18 @@ public class DialogManager : MonoBehaviour
         dialogText.text = activeDialog.Dialog[lineNum];
     }
 
-    public void StartDialogue(DialogueAction action)
+    public void StartDialogue(DialogObject dialogue)
     {
-        if (activeDialogueAction == null)
+        if (activeDialog == null)
         {
-            activeDialogueAction = action;
-            SetActiveDialogObject(action.GetDialogue());
+            SetActiveDialogObject(dialogue);
         }
         else IncreaseLineNum();
     }
     public void SetActiveDialogObject(DialogObject dialogObject)
     {
         activeDialog = dialogObject;
+        activeDialog.DialogStarted();
         ShowDialog();
     }
     public void ShowDialog()
@@ -95,9 +94,8 @@ public class DialogManager : MonoBehaviour
     public void CloseDialog()
     {
         //Debug.Log("line ", lineNum);
+        activeDialog.DialogEnded();
         activeDialog = null;
-        activeDialogueAction.DialogueEnded();
-        activeDialogueAction = null;
         dialogBox.SetActive(false);
     }
 

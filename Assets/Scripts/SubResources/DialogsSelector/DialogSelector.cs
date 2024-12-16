@@ -73,6 +73,15 @@ public class BaseDialogSelector
     {
         return null;
     }
+
+    protected bool CheckDialog(DialogObject dialog)
+    {
+        if (dialog != null && dialog.CanBeStarted())
+        {
+            return true;
+        }
+        return false;
+    }
 }
 
 [Serializable]
@@ -81,7 +90,11 @@ public class CommonDialogSelector : BaseDialogSelector
     [SerializeField] private DialogObject dialog;
     public override DialogObject GetSelectedDialog()
     {
-        return dialog;
+        if (CheckDialog(dialog))
+        {
+            return dialog;
+        }
+        return null;
     }
 }
 
@@ -92,7 +105,14 @@ public class VariantsDialogSelector : BaseDialogSelector
     [SerializeField] private DialogObject falseDialog;
     public override DialogObject GetSelectedDialog()
     {
-        return null;
+        foreach (DialogObject dialog in dialogsVariants)
+        {
+            if (CheckDialog(dialog))
+            {
+                return dialog;
+            }
+        }
+        return falseDialog;
     }
 }
 
@@ -102,6 +122,10 @@ class RandomDialogSelector : BaseDialogSelector
     [SerializeField] private DialogObject[] dialogsVariants;
     public override DialogObject GetSelectedDialog()
     {
-        return dialogsVariants[UnityEngine.Random.Range(0, dialogsVariants.Length)];
+        if (dialogsVariants.Length > 0)
+        {
+           return dialogsVariants[UnityEngine.Random.Range(0, dialogsVariants.Length)];
+        }
+        return null;
     }
 }

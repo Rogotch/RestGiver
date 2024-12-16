@@ -96,7 +96,6 @@ public class BaseCharacter : MonoBehaviour
         map_pos = target_position;
         Vector3 offsetToCenter = new Vector3(grid_component.cellSize.x / 2f, grid_component.cellSize.y / 2f, 0);
         Vector3 newGlobalPosition = grid_component.CellToWorld(new Vector3Int(target_position.x, target_position.y, 0)) ;
-        Debug.Log(newGlobalPosition + " " + offsetToCenter);
         transform.position = newGlobalPosition + offsetToCenter;
     }
 }

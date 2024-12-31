@@ -9,7 +9,7 @@ public class DialogueAction : InteractionComponent, IInteractionAction
         DialogManager.Instance.StartDialogue(GetDialogue());
     }
 
-    public DialogObject GetDialogue()
+    public ReplicsLine GetDialogue()
     {
         return selector.GetSelectedDialog();
     }

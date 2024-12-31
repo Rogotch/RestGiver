@@ -4,8 +4,8 @@ using UnityEngine;
 public class Response
 {
     [SerializeField] private string responseText;
-    [SerializeField] private DialogObject dialogObject;
+    [SerializeField] private ReplicsLine dialogObject;
 
     public string ResponseText => responseText;
-    public DialogObject DialogObject => dialogObject;
+    public ReplicsLine DialogueObject => dialogObject;
 }

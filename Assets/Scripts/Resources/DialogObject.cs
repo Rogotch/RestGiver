@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DialogObject", menuName = "DialogueSystem/DialogObject")]
-public class DialogObject : ScriptableObject
+[CreateAssetMenu(fileName = "DialogueObject", menuName = "DialogueSystem/DialogueObject")]
+public class ReplicsLine : ScriptableObject
 {
     [SerializeField] private string tag;
     [SerializeField] private DialogTagChecker[] reqDialogTags;

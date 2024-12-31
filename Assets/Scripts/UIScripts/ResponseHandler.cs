@@ -37,6 +37,6 @@ public class ResponseHandler : MonoBehaviour
             Destroy(responseButton);
         }
         temporaryButtons.Clear();
-        DialogManager.Instance.SetActiveDialogObject(response.DialogObject);
+        DialogManager.Instance.SetActiveDialogObject(response.DialogueObject);
     }
 }

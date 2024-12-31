@@ -69,12 +69,12 @@ class SelectorOptions : Editor
 [Serializable]
 public class BaseDialogSelector
 {
-    public virtual DialogObject GetSelectedDialog()
+    public virtual ReplicsLine GetSelectedDialog()
     {
         return null;
     }
 
-    protected bool CheckDialog(DialogObject dialog)
+    protected bool CheckDialog(ReplicsLine dialog)
     {
         if (dialog != null && dialog.CanBeStarted())
         {
@@ -87,8 +87,8 @@ public class BaseDialogSelector
 [Serializable]
 public class CommonDialogSelector : BaseDialogSelector
 {
-    [SerializeField] private DialogObject dialog;
-    public override DialogObject GetSelectedDialog()
+    [SerializeField] private ReplicsLine dialog;
+    public override ReplicsLine GetSelectedDialog()
     {
         if (CheckDialog(dialog))
         {
@@ -101,11 +101,11 @@ public class CommonDialogSelector : BaseDialogSelector
 [Serializable]
 public class VariantsDialogSelector : BaseDialogSelector
 {
-    [SerializeField] private DialogObject[] dialogsVariants;
-    [SerializeField] private DialogObject falseDialog;
-    public override DialogObject GetSelectedDialog()
+    [SerializeField] private ReplicsLine[] dialogsVariants;
+    [SerializeField] private ReplicsLine falseDialog;
+    public override ReplicsLine GetSelectedDialog()
     {
-        foreach (DialogObject dialog in dialogsVariants)
+        foreach (ReplicsLine dialog in dialogsVariants)
         {
             if (CheckDialog(dialog))
             {
@@ -119,8 +119,8 @@ public class VariantsDialogSelector : BaseDialogSelector
 [Serializable]
 class RandomDialogSelector : BaseDialogSelector
 {
-    [SerializeField] private DialogObject[] dialogsVariants;
-    public override DialogObject GetSelectedDialog()
+    [SerializeField] private ReplicsLine[] dialogsVariants;
+    public override ReplicsLine GetSelectedDialog()
     {
         if (dialogsVariants.Length > 0)
         {

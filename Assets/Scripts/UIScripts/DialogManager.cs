@@ -18,7 +18,7 @@ public class DialogManager : MonoBehaviour
 
     private ResponseHandler  responseHandler;
     private TypewriterEffect typewriterEffect;
-    private DialogObject     activeDialog;
+    private ReplicsLine     activeDialog;
     private Coroutine        currentCoroutine;
     private int              lineNum;
     private bool             showInProgress;
@@ -63,7 +63,7 @@ public class DialogManager : MonoBehaviour
         dialogText.text = activeDialog.Dialog[lineNum];
     }
 
-    public void StartDialogue(DialogObject dialogue)
+    public void StartDialogue(ReplicsLine dialogue)
     {
         if (activeDialog == null)
         {
@@ -71,7 +71,7 @@ public class DialogManager : MonoBehaviour
         }
         else IncreaseLineNum();
     }
-    public void SetActiveDialogObject(DialogObject dialogObject)
+    public void SetActiveDialogObject(ReplicsLine dialogObject)
     {
         activeDialog = dialogObject;
         activeDialog.DialogStarted();
